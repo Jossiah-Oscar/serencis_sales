@@ -3,8 +3,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart' as storage;
+import 'package:serensic_sale/model/company.dart';
+import 'package:serensic_sale/model/user.dart';
 
 class Database extends ChangeNotifier {
+  final CollectionReference userCollection =
+      FirebaseFirestore.instance.collection('Users');
+  final CollectionReference visitCollection =
+      FirebaseFirestore.instance.collection("Visits");
+
   Future creatVisit({
     companyName,
     phoneNumber,
@@ -15,26 +22,42 @@ class Database extends ChangeNotifier {
     checkInTime,
     checkOutTime,
   }) async {
-    CollectionReference topic = FirebaseFirestore.instance.collection("Visits");
+    Company company = Company(
+      companyName: companyName,
+      number: phoneNumber,
+      hostName: hostName,
+      longitude: longiTude,
+      latitude: latiTude,
+      reason: reason,
+      checkInTime: checkInTime,
+      checkOutTime: checkOutTime,
+    );
 
-    try {
-      await topic.add(
-        {
-          "Company Name": companyName,
-          "Phone Number": phoneNumber,
-          "Host Name": hostName,
-          "Reason": reason,
-          "Longitude": longiTude,
-          "Latitude": latiTude,
-          "CheckInTime": checkInTime,
-          "CheckOutTime": checkOutTime,
-          "UID": ""
-        },
-      );
-    } catch (e) {
+    var data = company.toJson();
+    await visitCollection.doc().set(data).whenComplete(() {
+      print("Visit Data Added");
+    }).catchError((e) {
       print(e);
-    }
+    });
   }
 
-  notifyListeners();
+  storeUserData({required String userName, userRole, userEmail, uID}) async {
+    DocumentReference documentReferencer = userCollection.doc(uID);
+
+    User user = User(
+      uID: uID,
+      name: userName,
+      present: true,
+      role: "User",
+      email: userEmail,
+    );
+
+    var data = user.toJson();
+
+    await documentReferencer.set(data).whenComplete(() {
+      print("User data added");
+    }).catchError((e) {
+      print(e);
+    });
+  }
 }

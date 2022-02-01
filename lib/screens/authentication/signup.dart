@@ -1,8 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as _firebase;
+import 'package:provider/provider.dart';
+import 'package:serensic_sale/backend/database.dart';
 import 'package:serensic_sale/main.dart';
 
 class SignupPage extends StatefulWidget {
@@ -16,6 +17,7 @@ class _SignupPageState extends State<SignupPage> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  String? _UID;
   // @override
   // void initState() {
   //   SystemChrome.setEnabledSystemUIOverlays([]);
@@ -101,24 +103,6 @@ class _SignupPageState extends State<SignupPage> {
                     SizedBox(
                       height: 5,
                     ),
-                    // Container(
-                    //   width: MediaQuery.of(context).size.width / 1.2,
-                    //   height: 45,
-                    //   padding: EdgeInsets.only(
-                    //       top: 4, left: 16, right: 16, bottom: 4),
-                    //   decoration: BoxDecoration(
-                    //       borderRadius: BorderRadius.all(Radius.circular(50)),
-                    //       color: Colors.white,
-                    //       boxShadow: [
-                    //         BoxShadow(color: Colors.black12, blurRadius: 5)
-                    //       ]),
-                    //   child: TextField(
-                    //     decoration: InputDecoration(
-                    //       border: InputBorder.none,
-                    //       hintText: 'Username',
-                    //     ),
-                    //   ),
-                    // ),
                     SizedBox(
                       height: 5,
                     ),
@@ -169,7 +153,18 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                     InkWell(
                       onTap: () async {
-                        await SignUp();
+                        await SignUp().then((value) {
+                          setState(() {
+                            _UID = value.uid;
+                          });
+                        });
+
+                        await Provider.of<Database>(context, listen: false)
+                            .storeUserData(
+                                userName: _nameController.text,
+                                userEmail: _emailController.text,
+                                uID: _UID);
+
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -226,9 +221,11 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
-  FirebaseAuth _auth = FirebaseAuth.instance;
+  _firebase.FirebaseAuth auth = _firebase.FirebaseAuth.instance;
 
-  Future SignUp() async {
+  Future<_firebase.User> SignUp() async {
+    _firebase.User _firebaseUser;
+
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -239,10 +236,16 @@ class _SignupPageState extends State<SignupPage> {
       },
     );
     try {
-      await _auth.createUserWithEmailAndPassword(
+      await auth.createUserWithEmailAndPassword(
           email: _emailController.text, password: _passwordController.text);
     } catch (e) {
       print(e);
     }
+
+    print(auth.currentUser?.uid);
+
+    _firebaseUser = auth.currentUser!;
+
+    return _firebaseUser;
   }
 }

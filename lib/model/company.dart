@@ -1,36 +1,48 @@
 class Company {
   String? companyName;
-  int? number;
-  String? personMet;
-  int? longitude;
-  int? latitude;
-  int? time;
+  String? number;
+  String? hostName;
+  String? reason;
+  String? longitude;
+  String? latitude;
+  String? checkInTime;
+  String? checkOutTime;
+  String? uID;
 
   Company(
       {this.companyName,
       this.number,
-      this.personMet,
+      this.hostName,
+      this.reason,
       this.longitude,
       this.latitude,
-      this.time});
+      this.checkInTime,
+      this.checkOutTime,
+      this.uID, latiTude});
 
   Company.fromJson(Map<String, dynamic> json) {
     companyName = json['Company Name'];
     number = json['Number'];
-    personMet = json['Person Met'];
+    hostName = json['Host Name'];
+    reason = json['Reason'];
     longitude = json['Longitude'];
     latitude = json['Latitude'];
-    time = json['Time'];
+    checkInTime = json['CheckInTime'];
+    checkOutTime = json['CheckOutTime'];
+    uID = json['UID'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['Company Name'] = this.companyName;
     data['Number'] = this.number;
-    data['Person Met'] = this.personMet;
+    data['Host Name'] = this.hostName;
+    data['Reason'] = this.reason;
     data['Longitude'] = this.longitude;
     data['Latitude'] = this.latitude;
-    data['Time'] = this.time;
+    data['CheckInTime'] = this.checkInTime;
+    data['CheckOutTime'] = this.checkOutTime;
+    data['UID'] = this.uID;
     return data;
   }
 }
