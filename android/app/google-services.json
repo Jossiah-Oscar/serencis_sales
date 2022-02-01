@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "308478988753",
+    "firebase_url": "https://portfolio-8b344.firebaseio.com",
+    "project_id": "portfolio-8b344",
+    "storage_bucket": "portfolio-8b344.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:308478988753:android:b8a8740a72316b1531d0f0",
+        "android_client_info": {
+          "package_name": "com.example.serensic_sale"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "308478988753-7j0nk8f3tn42b75p90f13de4m3i11pp8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.serensic_sale",
+            "certificate_hash": "615ba36ac50349bc7218c9e6441c387d6721ff13"
+          }
+        },
+        {
+          "client_id": "308478988753-7jea5o42l7eie60rkcb8rjuvd02rue7t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgI54YS2skbeou0pD4_NsFv7UiuRYtLzo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "308478988753-7jea5o42l7eie60rkcb8rjuvd02rue7t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
