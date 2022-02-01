@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
-import 'package:serensic_sale/database/database.dart';
+import 'package:serensic_sale/backend/database.dart';
+// import 'package:serensic_sale/database/database.dart';
 
 class CheckinPage extends StatefulWidget {
   const CheckinPage({Key? key}) : super(key: key);

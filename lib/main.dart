@@ -3,7 +3,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:serensic_sale/database/database.dart';
+import 'package:serensic_sale/backend/database.dart';
 import 'package:serensic_sale/screens/authentication/signup.dart';
 import 'package:serensic_sale/screens/checkin/checkin.dart';
 

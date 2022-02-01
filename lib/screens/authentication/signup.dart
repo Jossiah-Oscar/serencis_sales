@@ -1,7 +1,9 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:serensic_sale/main.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({Key? key}) : super(key: key);
@@ -11,7 +13,10 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
-  @override
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  // @override
   // void initState() {
   //   SystemChrome.setEnabledSystemUIOverlays([]);
   //   super.initState();
@@ -86,6 +91,7 @@ class _SignupPageState extends State<SignupPage> {
                             BoxShadow(color: Colors.black12, blurRadius: 5)
                           ]),
                       child: TextField(
+                        controller: _nameController,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Full Name',
@@ -128,6 +134,7 @@ class _SignupPageState extends State<SignupPage> {
                             BoxShadow(color: Colors.black12, blurRadius: 5)
                           ]),
                       child: TextField(
+                        controller: _emailController,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Email',
@@ -149,6 +156,7 @@ class _SignupPageState extends State<SignupPage> {
                             BoxShadow(color: Colors.black12, blurRadius: 5)
                           ]),
                       child: TextField(
+                        controller: _passwordController,
                         obscureText: true,
                         decoration: InputDecoration(
                           border: InputBorder.none,
@@ -160,8 +168,16 @@ class _SignupPageState extends State<SignupPage> {
                       height: 15,
                     ),
                     InkWell(
-                      onTap: () {
-                        Navigator.pushNamed(context, '/');
+                      onTap: () async {
+                        await SignUp();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return MyHomePage();
+                            },
+                          ),
+                        );
                       },
                       child: Container(
                         height: 45,
@@ -208,5 +224,25 @@ class _SignupPageState extends State<SignupPage> {
         ),
       ),
     );
+  }
+
+  FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future SignUp() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+    try {
+      await _auth.createUserWithEmailAndPassword(
+          email: _emailController.text, password: _passwordController.text);
+    } catch (e) {
+      print(e);
+    }
   }
 }
