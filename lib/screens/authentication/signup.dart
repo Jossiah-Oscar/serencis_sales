@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart' as _firebase;
 import 'package:provider/provider.dart';
 import 'package:serensic_sale/backend/database.dart';
 import 'package:serensic_sale/main.dart';
+import 'package:serensic_sale/screens/authentication/signin.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({Key? key}) : super(key: key);
@@ -169,7 +170,7 @@ class _SignupPageState extends State<SignupPage> {
                           context,
                           MaterialPageRoute(
                             builder: (context) {
-                              return MyHomePage();
+                              return LoginPage();
                             },
                           ),
                         );
@@ -200,18 +201,28 @@ class _SignupPageState extends State<SignupPage> {
                 ),
               ),
               InkWell(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("Have an account ?"),
-                    Text(
-                      "Login",
-                      style: TextStyle(color: Color(0xff6bceff)),
-                    ),
-                  ],
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.02,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text("Have an account ?"),
+                      Text(
+                        "Login",
+                        style: TextStyle(color: Color(0xff6bceff)),
+                      ),
+                    ],
+                  ),
                 ),
                 onTap: () {
-                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return LoginPage();
+                      },
+                    ),
+                  );
                 },
               ),
             ],
