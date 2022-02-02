@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:serensic_sale/main.dart';
 import 'package:serensic_sale/screens/authentication/signup.dart';
+import 'package:serensic_sale/screens/home/homepage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
