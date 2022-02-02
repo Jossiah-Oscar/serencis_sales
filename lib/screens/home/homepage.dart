@@ -1,5 +1,8 @@
+// ignore_for_file: prefer_const_constructors, sized_box_for_whitespace
+
 import 'package:flutter/material.dart';
 import 'package:serensic_sale/screens/checkin/checkin.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({
@@ -37,7 +40,22 @@ class _MyHomePageState extends State<MyHomePage> {
                   "Esther Lugoe",
                   style: Theme.of(context).textTheme.headline5,
                 ),
-                trailing: Icon(Icons.person),
+                trailing: GestureDetector(
+                    onTap: () async {
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      prefs.remove("UID").then((value) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return CheckinPage();
+                            },
+                          ),
+                        );
+                      });
+                    },
+                    child: Icon(Icons.person)),
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.03,

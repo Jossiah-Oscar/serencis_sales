@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart' as _firebase;
 import 'package:provider/provider.dart';
 import 'package:serensic_sale/backend/database.dart';
-import 'package:serensic_sale/main.dart';
 import 'package:serensic_sale/screens/authentication/signin.dart';
 
 class SignupPage extends StatefulWidget {
