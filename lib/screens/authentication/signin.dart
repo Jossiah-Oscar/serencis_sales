@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:serensic_sale/main.dart';
 import 'package:serensic_sale/screens/authentication/signup.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -201,6 +202,9 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<User> SignIn() async {
     User _firebaseUser;
+    _firebaseUser = auth.currentUser!;
+
+    var UID = _firebaseUser.uid;
 
     try {
       await auth.signInWithEmailAndPassword(
@@ -215,6 +219,8 @@ class _LoginPageState extends State<LoginPage> {
           );
         },
       );
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString("UID", UID);
       Navigator.push(
         context,
         MaterialPageRoute(

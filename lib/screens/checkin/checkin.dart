@@ -135,25 +135,25 @@ class _CheckinPageState extends State<CheckinPage> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.05,
                 ),
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.1,
-                  child: Column(
-                    children: [
-                      Text(
-                        "Latitude: $_latitude",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      Text(
-                        "Longitude: $_longitude",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      Text(
-                        "Time Stamp: $_checkInTime",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                    ],
-                  ),
-                ),
+                // Container(
+                //   height: MediaQuery.of(context).size.height * 0.1,
+                //   child: Column(
+                //     children: [
+                //       Text(
+                //         "Latitude: $_latitude",
+                //         style: TextStyle(fontSize: 20),
+                //       ),
+                //       Text(
+                //         "Longitude: $_longitude",
+                //         style: TextStyle(fontSize: 20),
+                //       ),
+                //       Text(
+                //         "Time Stamp: $_checkInTime",
+                //         style: TextStyle(fontSize: 20),
+                //       ),
+                //     ],
+                //   ),
+                // ),
               ],
             ),
           ),
