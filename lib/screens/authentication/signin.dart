@@ -268,7 +268,48 @@ class _LoginPageState extends State<LoginPage> {
         // String? email = e.email;
 
       }
-      // if (e.code == "wrong-password") {}
+      if (e.code == "wrong-password") {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) {
+            return Center(
+              child: AlertDialog(
+                title: const Text("Wrong Password"),
+                content: SingleChildScrollView(
+                  child: ListBody(
+                    children: const <Widget>[
+                      Text("This password is incorrect"),
+                      // Text('Would you like to Sign Up?'),
+                    ],
+                  ),
+                ),
+                actions: <Widget>[
+                  // TextButton(
+                  //   child: const Text('YES'),
+                  //   onPressed: () {
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //         builder: (context) {
+                  //           return MyHomePage();
+                  //         },
+                  //       ),
+                  //     );
+                  //   },
+                  // ),
+                  TextButton(
+                    child: const Text('OK'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      }
       print(e.code);
     }
 
