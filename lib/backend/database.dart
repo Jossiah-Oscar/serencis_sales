@@ -67,5 +67,7 @@ class Database extends ChangeNotifier {
     });
   }
 
-  getUserData() async {}
+  checkOut() async {
+    
+  }
 }

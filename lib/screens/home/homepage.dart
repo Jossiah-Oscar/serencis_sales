@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, sized_box_for_whitespace
+// ignore_for_file: prefer_const_constructors, sized_box_for_whitespace, prefer_const_literals_to_create_immutables
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -40,6 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       final user = snapshot.data;
+                      
 
                       return ListTile(
                         leading: Icon(Icons.menu),
@@ -169,6 +170,58 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 ),
               ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.02,
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height * 0.34,
+                // color: Colors.amberAccent,
+                child: Column(
+                  children: [
+                    ListTile(
+                        title: Center(
+                      child: Text("Recent Visits"),
+                    )),
+                    FutureBuilder<List<Visit>>(
+                        future: readRecentVisits().first,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            final _recentVisits = snapshot.data!;
+
+                            return Container(
+                              height: MediaQuery.of(context).size.height * 0.26,
+                              // color: Colors.red,
+                              child: ListView.builder(
+                                  itemCount: _recentVisits.length,
+                                  itemBuilder: (context, index) {
+                                    return Card(
+                                      child: ListTile(
+                                        // tileColor: Colors.lightBlueAccent,
+                                        title: Text(
+                                            "${_recentVisits[index].companyName}"),
+                                        subtitle: Text(
+                                            "Reason for visit: ${_recentVisits[index].reason}"),
+
+                                        trailing: IconButton(
+                                            onPressed: () {
+                                              
+                                            },
+                                            icon: Icon(Icons.check)),
+                                      ),
+                                    );
+                                  }),
+                            );
+                          } else if (snapshot.hasError) {
+                            return Text("Opps Something Went Wrong");
+                          } else {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                        }),
+                  ],
+                ),
+              )
             ],
           ),
         ),
@@ -178,14 +231,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
   String? finalUID;
 
-  // Future getValidationData() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   var obtainedUID = prefs.getString("UID");
+  Stream<List<Visit>> readRecentVisits() {
+    Stream<List<Visit>> recentVisits = FirebaseFirestore.instance
+        .collection('Visits')
+        .where('UID', isEqualTo: finalUID)
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => Visit.fromJson(doc.data())).toList());
 
-  //   setState(() {
-  //     finalUID = obtainedUID;
-  //   });
-  // }
+    return recentVisits;
+  }
 
   Stream<List<Visit>> readVisits() {
     Stream<List<Visit>> visits = FirebaseFirestore.instance

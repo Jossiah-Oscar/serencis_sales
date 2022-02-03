@@ -24,9 +24,6 @@ class _VisitsPageState extends State<VisitsPage> {
               return Text("Something went wrong");
             } else if (snapshot.hasData) {
               final visits = snapshot.data!;
-              if (kDebugMode) {
-                print(visits.length);
-              }
 
               return Container(
                 height: MediaQuery.of(context).size.height * 0.4,
