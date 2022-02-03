@@ -222,7 +222,7 @@ class _LoginPageState extends State<LoginPage> {
       );
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString("UID", UID);
-      
+
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -293,19 +293,6 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 actions: <Widget>[
-                  // TextButton(
-                  //   child: const Text('YES'),
-                  //   onPressed: () {
-                  //     Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(
-                  //         builder: (context) {
-                  //           return MyHomePage();
-                  //         },
-                  //       ),
-                  //     );
-                  //   },
-                  // ),
                   TextButton(
                     child: const Text('OK'),
                     onPressed: () {

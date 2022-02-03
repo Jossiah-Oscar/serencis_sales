@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:serensic_sale/model/company.dart';
 import 'package:serensic_sale/screens/checkin/checkin.dart';
 import 'package:serensic_sale/screens/visits/visits.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -34,33 +35,47 @@ class _MyHomePageState extends State<MyHomePage> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.03,
               ),
-              ListTile(
-                leading: Icon(Icons.menu),
-                title: Text(
-                  "Welcome Back",
-                  style: Theme.of(context).textTheme.headline4,
-                ),
-                subtitle: Text(
-                  "Esther Lugoe",
-                  style: Theme.of(context).textTheme.headline5,
-                ),
-                trailing: GestureDetector(
-                    onTap: () async {
-                      SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                      prefs.remove("UID").then((value) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return CheckinPage();
+              FutureBuilder<f_User.User?>(
+                  future: readUser(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      final user = snapshot.data;
+
+                      return ListTile(
+                        leading: Icon(Icons.menu),
+                        title: Text(
+                          "Welcome Back",
+                          style: Theme.of(context).textTheme.headline4,
+                        ),
+                        subtitle: Text(
+                          user!.name.toString(),
+                          style: Theme.of(context).textTheme.headline5,
+                        ),
+                        trailing: GestureDetector(
+                            onTap: () async {
+                              SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+                              prefs.remove("UID").then((value) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return CheckinPage();
+                                    },
+                                  ),
+                                );
+                              });
                             },
-                          ),
-                        );
-                      });
-                    },
-                    child: Icon(Icons.person)),
-              ),
+                            child: Icon(Icons.person)),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text("Something went wrong");
+                    } else {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  }),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.03,
               ),
@@ -161,19 +176,46 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void _onPressed() {
-    var firebaseUser = FirebaseAuth.instance.currentUser;
-    final CollectionReference userCollection =
-        FirebaseFirestore.instance.collection('Users');
-    // userCollection.withConverter(
-    //   fromFirestore: (snapshot, _) => f_User.User.fromJson(snapshot.data()!),
-    //   toFirestore: (user, _) => f_User.User.toJson(),
-    // );
+  String? finalUID;
 
-    userCollection.doc(firebaseUser?.uid).get().then((value) {
-      if (kDebugMode) {
-        print(value.data());
-      }
+  // Future getValidationData() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   var obtainedUID = prefs.getString("UID");
+
+  //   setState(() {
+  //     finalUID = obtainedUID;
+  //   });
+  // }
+
+  Stream<List<Visit>> readVisits() {
+    Stream<List<Visit>> visits = FirebaseFirestore.instance
+        .collection("Visits")
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => Visit.fromJson(doc.data())).toList());
+
+    return visits;
+  }
+
+  Future<f_User.User?> readUser() async {
+    //getting the saved shared Preference UID
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var obtainedUID = prefs.getString("UID");
+
+    setState(() {
+      finalUID = obtainedUID;
     });
+
+    //Using the acquired UID to retrive the correct user document
+    final docUser =
+        FirebaseFirestore.instance.collection("Users").doc(finalUID);
+    final snapshot = await docUser.get();
+
+    // f_User.User user = f_User.User.fromJson(snapshot.data());
+
+    if (snapshot.exists) {
+      return f_User.User.fromJson(snapshot.data()!);
+    }
+    // return user;
   }
 }
