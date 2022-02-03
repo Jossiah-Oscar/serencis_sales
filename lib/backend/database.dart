@@ -23,7 +23,7 @@ class Database extends ChangeNotifier {
     checkInTime,
     checkOutTime,
   }) async {
-    Company company = Company(
+    Visit visit = Visit(
       companyName: companyName,
       number: phoneNumber,
       hostName: hostName,
@@ -34,7 +34,7 @@ class Database extends ChangeNotifier {
       checkOutTime: checkOutTime,
     );
 
-    var data = company.toJson();
+    var data = visit.toJson();
     await visitCollection.doc().set(data).whenComplete(() {
       if (kDebugMode) {
         print("Visit Data Added");

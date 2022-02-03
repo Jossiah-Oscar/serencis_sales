@@ -1,4 +1,4 @@
-class Company {
+class Visit {
   String? companyName;
   String? number;
   String? hostName;
@@ -9,7 +9,7 @@ class Company {
   String? checkOutTime;
   String? uID;
 
-  Company(
+  Visit(
       {this.companyName,
       this.number,
       this.hostName,
@@ -20,7 +20,7 @@ class Company {
       this.checkOutTime,
       this.uID, latiTude});
 
-  Company.fromJson(Map<String, dynamic> json) {
+  Visit.fromJson(Map<String, dynamic> json) {
     companyName = json['Company Name'];
     number = json['Number'];
     hostName = json['Host Name'];
