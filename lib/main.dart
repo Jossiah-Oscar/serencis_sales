@@ -8,6 +8,7 @@ import 'package:serensic_sale/screens/authentication/signin.dart';
 import 'package:serensic_sale/screens/authentication/signup.dart';
 import 'package:serensic_sale/screens/checkin/checkin.dart';
 import 'package:serensic_sale/screens/home/homepage.dart';
+import 'package:serensic_sale/screens/visits/visits.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
@@ -35,12 +36,10 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: const Wrapper(),
+          home: const VisitsPage(),
         ));
   }
 }
-
-
 
 //Determine if Users has to login again for can go straight to the application
 class Wrapper extends StatefulWidget {
@@ -93,5 +92,3 @@ class _WrapperState extends State<Wrapper> {
     return Container();
   }
 }
-
-

@@ -1,6 +1,7 @@
 // ignore_for_file: invalid_required_positional_param
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart' as storage;
 import 'package:serensic_sale/model/company.dart';
@@ -35,13 +36,18 @@ class Database extends ChangeNotifier {
 
     var data = company.toJson();
     await visitCollection.doc().set(data).whenComplete(() {
-      print("Visit Data Added");
+      if (kDebugMode) {
+        print("Visit Data Added");
+      }
     }).catchError((e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     });
   }
 
   storeUserData({required String userName, userRole, userEmail, uID}) async {
+
     DocumentReference documentReferencer = userCollection.doc(uID);
 
     User user = User(
@@ -59,5 +65,9 @@ class Database extends ChangeNotifier {
     }).catchError((e) {
       print(e);
     });
+  }
+
+  getUserData() async{
+    
   }
 }

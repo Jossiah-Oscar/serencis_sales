@@ -1,8 +1,12 @@
 // ignore_for_file: prefer_const_constructors, sized_box_for_whitespace
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:serensic_sale/screens/checkin/checkin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:serensic_sale/model/user.dart' as f_User;
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({
@@ -23,7 +27,6 @@ class _MyHomePageState extends State<MyHomePage> {
       body: SafeArea(
         child: Center(
           child: Column(
-            // mainAxisAlignment: MainAxisAlignment.center,
             // ignore: prefer_const_literals_to_create_immutables
             children: <Widget>[
               // ignore: prefer_const_constructors
@@ -107,30 +110,34 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        height: MediaQuery.of(context).size.height * 0.4,
-                        width: MediaQuery.of(context).size.width * 0.4,
-                        // color: Colors.red,
-                        child: Card(
-                          elevation: 7.0,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.map,
-                                size: 80,
-                              ),
-                              SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.03,
-                              ),
-                              Text(
-                                "Visits",
-                                style: TextStyle(fontSize: 20),
-                              ),
-                            ],
+                    GestureDetector(
+                      onTap: () {
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: MediaQuery.of(context).size.height * 0.4,
+                          width: MediaQuery.of(context).size.width * 0.4,
+                          // color: Colors.red,
+                          child: Card(
+                            elevation: 7.0,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.map,
+                                  size: 80,
+                                ),
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.03,
+                                ),
+                                Text(
+                                  "Visits",
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -138,23 +145,26 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 ),
               ),
-
-              // Container(
-              //   height: MediaQuery.of(context).size.height * 0.1,
-              //   width: MediaQuery.of(context).size.width * 0.75,
-              //   color: Colors.amberAccent,
-              //   child: ElevatedButton(
-              //     onPressed: () {},
-              //     child: Text(
-              //       "Check In",
-              //       style: TextStyle(fontSize: 20),
-              //     ),
-              //   ),
-              // )
             ],
           ),
         ),
       ),
     );
+  }
+
+  void _onPressed() {
+    var firebaseUser = FirebaseAuth.instance.currentUser;
+    final CollectionReference userCollection =
+        FirebaseFirestore.instance.collection('Users');
+    // userCollection.withConverter(
+    //   fromFirestore: (snapshot, _) => f_User.User.fromJson(snapshot.data()!),
+    //   toFirestore: (user, _) => f_User.User.toJson(),
+    // );
+
+    userCollection.doc(firebaseUser?.uid).get().then((value) {
+      if (kDebugMode) {
+        print(value.data());
+      }
+    });
   }
 }
