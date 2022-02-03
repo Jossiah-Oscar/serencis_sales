@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:serensic_sale/model/company.dart';
-import 'package:serensic_sale/model/user.dart';
 
 class VisitsPage extends StatefulWidget {
   const VisitsPage({Key? key}) : super(key: key);
@@ -18,8 +17,8 @@ class _VisitsPageState extends State<VisitsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(),
-        body: StreamBuilder<List<Visit>>(
-          stream: readVisits(),
+        body: FutureBuilder<List<Visit>>(
+          future: readVisits().first,
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return Text("Something went wrong");
