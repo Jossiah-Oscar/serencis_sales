@@ -13,16 +13,16 @@ class Database extends ChangeNotifier {
   final CollectionReference visitCollection =
       FirebaseFirestore.instance.collection("Visits");
 
-  Future creatVisit({
-    companyName,
-    phoneNumber,
-    hostName,
-    longiTude,
-    latiTude,
-    reason,
-    checkInTime,
-    checkOutTime,
-  }) async {
+  Future creatVisit(
+      {companyName,
+      phoneNumber,
+      hostName,
+      longiTude,
+      latiTude,
+      reason,
+      checkInTime,
+      checkOutTime,
+      UID}) async {
     Visit visit = Visit(
       companyName: companyName,
       number: phoneNumber,
@@ -32,6 +32,7 @@ class Database extends ChangeNotifier {
       reason: reason,
       checkInTime: checkInTime,
       checkOutTime: checkOutTime,
+      uID: UID,
     );
 
     var data = visit.toJson();
@@ -47,7 +48,6 @@ class Database extends ChangeNotifier {
   }
 
   storeUserData({required String userName, userRole, userEmail, uID}) async {
-
     DocumentReference documentReferencer = userCollection.doc(uID);
 
     User user = User(
@@ -67,7 +67,5 @@ class Database extends ChangeNotifier {
     });
   }
 
-  getUserData() async{
-    
-  }
+  getUserData() async {}
 }

@@ -5,6 +5,8 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:serensic_sale/backend/database.dart';
+import 'package:serensic_sale/screens/home/homepage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:serensic_sale/database/database.dart';
 
 class CheckinPage extends StatefulWidget {
@@ -116,10 +118,18 @@ class _CheckinPageState extends State<CheckinPage> {
 
                       await _getLocation();
 
-                      print(_companyNameController.text);
+                      //getting the shared preference UID saved to add it to the database
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      var obtainedUID = prefs.getString("UID");
+
+                      setState(() {
+                        finalUID = obtainedUID;
+                      });
 
                       // .then((value) {});
-                      Provider.of<Database>(context, listen: false).creatVisit(
+                      Provider.of<Database>(context, listen: false)
+                          .creatVisit(
                         hostName: _hostNameController.text,
                         companyName: _companyNameController.text,
                         phoneNumber: _phoneNumberController.text,
@@ -128,7 +138,22 @@ class _CheckinPageState extends State<CheckinPage> {
                         checkInTime: _checkInTime.toString(),
                         checkOutTime: _checkOutTime.toString(),
                         reason: _reasonController.text,
-                      );
+                        UID: finalUID,
+                      )
+                          .then((value) {
+                        _hostNameController.clear();
+                        _companyNameController.clear();
+                        _phoneNumberController.clear();
+                        _reasonController.clear();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return MyHomePage();
+                            },
+                          ),
+                        );
+                      });
                     },
                   ),
                 ),
@@ -160,6 +185,17 @@ class _CheckinPageState extends State<CheckinPage> {
         ),
       ),
     );
+  }
+
+  String? finalUID;
+
+  Future getValidationData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var obtainedUID = prefs.getString("UID");
+
+    setState(() {
+      finalUID = obtainedUID;
+    });
   }
 
   Future<LocationData?> _getLocation() async {
