@@ -32,9 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
             // ignore: prefer_const_literals_to_create_immutables
             children: <Widget>[
               // ignore: prefer_const_constructors
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.03,
-              ),
+
               FutureBuilder<f_User.User?>(
                   future: readUser(),
                   builder: (context, snapshot) {
@@ -45,14 +43,19 @@ class _MyHomePageState extends State<MyHomePage> {
                         leading: Icon(Icons.menu),
                         title: Text(
                           "Welcome Back",
-                          style: Theme.of(context).textTheme.headline4,
+                          style: Theme.of(context).textTheme.headline5,
                         ),
                         subtitle: Text(
                           user!.name.toString(),
                           style: Theme.of(context).textTheme.headline5,
                         ),
-                        trailing: GestureDetector(
-                            onTap: () async {
+                        trailing: Card(
+                          child: TextButton(
+                            child: Text(
+                              "Logout",
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            onPressed: () async {
                               SharedPreferences prefs =
                                   await SharedPreferences.getInstance();
                               prefs.remove("UID").then((value) {
@@ -66,7 +69,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                 );
                               });
                             },
-                            child: Icon(Icons.person)),
+                          ),
+                        ),
                       );
                     } else if (snapshot.hasError) {
                       return Text("Something went wrong");
@@ -76,9 +80,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       );
                     }
                   }),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.03,
-              ),
+              // SizedBox(
+              //   height: MediaQuery.of(context).size.height * 0.0,
+              // ),
 
               Container(
                 height: MediaQuery.of(context).size.height * 0.4,
@@ -160,6 +164,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                   "Visits",
                                   style: TextStyle(fontSize: 20),
                                 ),
+                                Text(
+                                  "FOR ADMINS ONLY",
+                                  style: TextStyle(fontSize: 14),
+                                ),
                               ],
                             ),
                           ),
@@ -169,18 +177,29 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 ),
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.02,
-              ),
+
               Container(
-                height: MediaQuery.of(context).size.height * 0.34,
+                height: MediaQuery.of(context).size.height * 0.4,
                 // color: Colors.amberAccent,
                 child: Column(
                   children: [
-                    ListTile(
-                        title: Center(
-                      child: Text("Recent Visits"),
-                    )),
+                    FutureBuilder<f_User.User?>(
+                        future: readUser(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            final user = snapshot.data;
+                            return ListTile(
+                                title: Center(
+                              child: Text("${user!.name}'s  Recent Visits"),
+                            ));
+                          } else if (snapshot.hasError) {
+                            return Text("Opps Somethings Went Wrong");
+                          } else {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                        }),
                     FutureBuilder<List<Visit>>(
                         future: readRecentVisits().first,
                         builder: (context, snapshot) {
@@ -188,7 +207,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             final _recentVisits = snapshot.data!;
 
                             return Container(
-                              height: MediaQuery.of(context).size.height * 0.26,
+                              height:
+                                  MediaQuery.of(context).size.height * 0.342,
                               // color: Colors.red,
                               child: ListView.builder(
                                   itemCount: _recentVisits.length,

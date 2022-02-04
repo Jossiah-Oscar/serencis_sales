@@ -201,12 +201,7 @@ class _LoginPageState extends State<LoginPage> {
 
   FirebaseAuth auth = FirebaseAuth.instance;
 
-  Future<User> SignIn() async {
-    User _firebaseUser;
-    _firebaseUser = auth.currentUser!;
-
-    var UID = _firebaseUser.uid;
-
+  Future<User?> SignIn() async {
     try {
       await auth.signInWithEmailAndPassword(
           email: _emailController.text.trim(),
@@ -220,6 +215,11 @@ class _LoginPageState extends State<LoginPage> {
           );
         },
       );
+      User? _firebaseUser;
+      _firebaseUser = auth.currentUser!;
+
+      var UID = _firebaseUser.uid;
+
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString("UID", UID);
 
@@ -307,8 +307,9 @@ class _LoginPageState extends State<LoginPage> {
       }
       print(e.code);
     }
-
+    User? _firebaseUser;
     _firebaseUser = auth.currentUser!;
+    // _firebaseUser = auth.currentUser!;
     return _firebaseUser;
   }
 }

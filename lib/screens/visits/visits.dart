@@ -26,7 +26,7 @@ class _VisitsPageState extends State<VisitsPage> {
               final visits = snapshot.data!;
 
               return Container(
-                height: MediaQuery.of(context).size.height * 0.4,
+                height: MediaQuery.of(context).size.height * 1,
                 width: MediaQuery.of(context).size.width,
                 child: ListView.builder(
                     itemCount: visits.length,
