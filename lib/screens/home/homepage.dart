@@ -40,7 +40,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       final user = snapshot.data;
-                      
 
                       return ListTile(
                         leading: Icon(Icons.menu),
@@ -203,9 +202,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                             "Reason for visit: ${_recentVisits[index].reason}"),
 
                                         trailing: IconButton(
-                                            onPressed: () {
-                                              
-                                            },
+                                            onPressed: () {},
                                             icon: Icon(Icons.check)),
                                       ),
                                     );
@@ -248,7 +245,6 @@ class _MyHomePageState extends State<MyHomePage> {
         .snapshots()
         .map((snapshot) =>
             snapshot.docs.map((doc) => Visit.fromJson(doc.data())).toList());
-
     return visits;
   }
 

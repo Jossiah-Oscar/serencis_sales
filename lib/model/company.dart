@@ -8,6 +8,7 @@ class Visit {
   String? checkInTime;
   String? checkOutTime;
   String? uID;
+  String? documentID;
 
   Visit(
       {this.companyName,
@@ -18,7 +19,8 @@ class Visit {
       this.latitude,
       this.checkInTime,
       this.checkOutTime,
-      this.uID, latiTude});
+      this.uID,
+      this.documentID});
 
   Visit.fromJson(Map<String, dynamic> json) {
     companyName = json['Company Name'];
@@ -30,6 +32,7 @@ class Visit {
     checkInTime = json['CheckInTime'];
     checkOutTime = json['CheckOutTime'];
     uID = json['UID'];
+    documentID = json['Document ID'];
   }
 
   Map<String, dynamic> toJson() {
@@ -43,6 +46,7 @@ class Visit {
     data['CheckInTime'] = this.checkInTime;
     data['CheckOutTime'] = this.checkOutTime;
     data['UID'] = this.uID;
+    data['Document ID'] = this.documentID;
     return data;
   }
 }

@@ -1,4 +1,4 @@
-// ignore_for_file: invalid_required_positional_param
+// ignore_for_file: invalid_required_positional_param, non_constant_identifier_names
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
@@ -24,16 +24,16 @@ class Database extends ChangeNotifier {
       checkOutTime,
       UID}) async {
     Visit visit = Visit(
-      companyName: companyName,
-      number: phoneNumber,
-      hostName: hostName,
-      longitude: longiTude,
-      latitude: latiTude,
-      reason: reason,
-      checkInTime: checkInTime,
-      checkOutTime: checkOutTime,
-      uID: UID,
-    );
+        companyName: companyName,
+        number: phoneNumber,
+        hostName: hostName,
+        longitude: longiTude,
+        latitude: latiTude,
+        reason: reason,
+        checkInTime: checkInTime,
+        checkOutTime: checkOutTime,
+        uID: UID,
+        documentID: "");
 
     var data = visit.toJson();
     await visitCollection.doc().set(data).whenComplete(() {
@@ -60,14 +60,30 @@ class Database extends ChangeNotifier {
 
     var data = user.toJson();
 
-    await documentReferencer.set(data).whenComplete(() {
-      print("User data added");
+    var setDoc = await documentReferencer.set(data).whenComplete(() {
+      if (kDebugMode) {
+        print("User data added");
+      }
     }).catchError((e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     });
   }
 
-  checkOut() async {
-    
+  checkOut(@required String checkOutTime) async {
+    Visit visit = Visit(
+      checkOutTime: checkOutTime,
+    );
+    var data = visit.toJson();
+    await visitCollection.doc().update(data).whenComplete(() {
+      if (kDebugMode) {
+        print("Visit Data Added");
+      }
+    }).catchError((e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    });
   }
 }
