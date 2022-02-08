@@ -21,8 +21,8 @@ class Database extends ChangeNotifier {
       latiTude,
       reason,
       checkInTime,
-      checkOutTime,
       UID}) async {
+    String docId = FirebaseFirestore.instance.collection("Visits").doc().id;
     Visit visit = Visit(
         companyName: companyName,
         number: phoneNumber,
@@ -31,14 +31,13 @@ class Database extends ChangeNotifier {
         latitude: latiTude,
         reason: reason,
         checkInTime: checkInTime,
-        checkOutTime: checkOutTime,
         uID: UID,
-        documentID: "");
+        documentID: docId);
 
     var data = visit.toJson();
-    await visitCollection.doc().set(data).whenComplete(() {
+    await visitCollection.doc(docId).set(data).whenComplete(() {
       if (kDebugMode) {
-        print("Visit Data Added");
+        print("Visit Data Added with $docId");
       }
     }).catchError((e) {
       if (kDebugMode) {
@@ -71,19 +70,8 @@ class Database extends ChangeNotifier {
     });
   }
 
-  checkOut(@required String checkOutTime) async {
-    Visit visit = Visit(
-      checkOutTime: checkOutTime,
-    );
-    var data = visit.toJson();
-    await visitCollection.doc().update(data).whenComplete(() {
-      if (kDebugMode) {
-        print("Visit Data Added");
-      }
-    }).catchError((e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    });
+  checkOut(@required String checkOutTime, docID) async {
+   
+    await visitCollection.doc(docID).update({'checkOutTime': checkOutTime});
   }
 }

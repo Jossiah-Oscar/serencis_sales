@@ -136,7 +136,6 @@ class _CheckinPageState extends State<CheckinPage> {
                         latiTude: _latitude.toString(),
                         longiTude: _longitude.toString(),
                         checkInTime: _checkInTime.toString(),
-                        checkOutTime: _checkOutTime.toString(),
                         reason: _reasonController.text,
                         UID: finalUID,
                       )

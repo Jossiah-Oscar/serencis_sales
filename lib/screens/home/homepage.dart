@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:serensic_sale/backend/database.dart';
 import 'package:serensic_sale/model/company.dart';
 import 'package:serensic_sale/screens/checkin/checkin.dart';
 import 'package:serensic_sale/screens/visits/visits.dart';
@@ -20,6 +22,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  String checkOutTime = DateTime.now().toString();
+  bool isCheckedOut = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -200,8 +204,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             );
                           }
                         }),
-                    FutureBuilder<List<Visit>>(
-                        future: readRecentVisits().first,
+                    StreamBuilder<List<Visit>>(
+                        stream: readRecentVisits(),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             final _recentVisits = snapshot.data!;
@@ -222,8 +226,36 @@ class _MyHomePageState extends State<MyHomePage> {
                                             "Reason for visit: ${_recentVisits[index].reason}"),
 
                                         trailing: IconButton(
-                                            onPressed: () {},
-                                            icon: Icon(Icons.check)),
+                                          onPressed: () {
+                                            String? docID =
+                                                _recentVisits[index].documentID;
+
+                                            if (_recentVisits[index]
+                                                    .checkOutTime ==
+                                                null) {
+                                              // Provider.of<Database>(context,
+                                              //         listen: false)
+                                              //     .checkOut(
+                                              //         checkOutTime, docID);
+
+                                              print(_recentVisits[index]
+                                                  .checkOutTime);
+                                            } else {
+                                              Center(
+                                                child: Text(
+                                                    "This location has been checked out"),
+                                              );
+                                            }
+                                          },
+                                          icon: Icon(
+                                            Icons.check,
+                                          ),
+                                          color: _recentVisits[index]
+                                                      .checkOutTime ==
+                                                  null
+                                              ? Colors.redAccent
+                                              : Colors.green,
+                                        ),
                                       ),
                                     );
                                   }),
@@ -265,6 +297,7 @@ class _MyHomePageState extends State<MyHomePage> {
         .snapshots()
         .map((snapshot) =>
             snapshot.docs.map((doc) => Visit.fromJson(doc.data())).toList());
+
     return visits;
   }
 
