@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:serensic_sale/backend/database.dart';
 import 'package:serensic_sale/screens/home/homepage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:geocoding/geocoding.dart' as address;
 // import 'package:serensic_sale/database/database.dart';
 
 class CheckinPage extends StatefulWidget {
@@ -25,6 +26,8 @@ class _CheckinPageState extends State<CheckinPage> {
 
   String? _longitude;
   String? _latitude;
+  double? _longitude2 = 0;
+  double? _latitude2 = 0;
   String? _checkInTime;
   String? _checkOutTime;
 
@@ -159,6 +162,16 @@ class _CheckinPageState extends State<CheckinPage> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.05,
                 ),
+                ElevatedButton(
+                  onPressed: () async {
+                    await _getLocation();
+                    List<address.Placemark> placemarks = await address
+                        .placemarkFromCoordinates(_latitude2!, _longitude2!);
+
+                    print(placemarks[0].street);
+                  },
+                  child: Text("data"),
+                ),
                 // Container(
                 //   height: MediaQuery.of(context).size.height * 0.1,
                 //   child: Column(
@@ -225,6 +238,8 @@ class _CheckinPageState extends State<CheckinPage> {
     setState(() {
       _latitude = _locationData.latitude.toString();
       _longitude = _locationData.longitude.toString();
+      _longitude2 = _locationData.longitude;
+      _latitude2 = _locationData.latitude;
       _checkInTime = DateTime.now().toString();
     });
 
