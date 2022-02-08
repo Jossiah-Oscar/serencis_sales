@@ -24,12 +24,11 @@ class _CheckinPageState extends State<CheckinPage> {
   final _hostNameController = TextEditingController();
   final _reasonController = TextEditingController();
 
-  String? _longitude;
-  String? _latitude;
   double? _longitude2 = 0;
   double? _latitude2 = 0;
   String? _checkInTime;
-  String? _checkOutTime;
+
+  String? _streetName;
 
   @override
   Widget build(BuildContext context) {
@@ -120,6 +119,11 @@ class _CheckinPageState extends State<CheckinPage> {
                       // getLocation();
 
                       await _getLocation();
+                      List<address.Placemark> placemarks = await address
+                          .placemarkFromCoordinates(_latitude2!, _longitude2!);
+                      setState(() {
+                        _streetName = placemarks[0].street;
+                      });
 
                       //getting the shared preference UID saved to add it to the database
                       SharedPreferences prefs =
@@ -136,8 +140,7 @@ class _CheckinPageState extends State<CheckinPage> {
                         hostName: _hostNameController.text,
                         companyName: _companyNameController.text,
                         phoneNumber: _phoneNumberController.text,
-                        latiTude: _latitude.toString(),
-                        longiTude: _longitude.toString(),
+                        streetName: _streetName,
                         checkInTime: _checkInTime.toString(),
                         reason: _reasonController.text,
                         UID: finalUID,
@@ -168,29 +171,15 @@ class _CheckinPageState extends State<CheckinPage> {
                     List<address.Placemark> placemarks = await address
                         .placemarkFromCoordinates(_latitude2!, _longitude2!);
 
-                    print(placemarks[0].street);
+                    print(
+                        "${placemarks[0].street} + ${placemarks[1].street} + ${placemarks[2].street} + ${placemarks[3].street} + ${placemarks[4].street}");
+                    setState(() {
+                      _streetName = placemarks[0].street;
+                    });
                   },
-                  child: Text("data"),
+                  child: Text("${_streetName}"),
                 ),
-                // Container(
-                //   height: MediaQuery.of(context).size.height * 0.1,
-                //   child: Column(
-                //     children: [
-                //       Text(
-                //         "Latitude: $_latitude",
-                //         style: TextStyle(fontSize: 20),
-                //       ),
-                //       Text(
-                //         "Longitude: $_longitude",
-                //         style: TextStyle(fontSize: 20),
-                //       ),
-                //       Text(
-                //         "Time Stamp: $_checkInTime",
-                //         style: TextStyle(fontSize: 20),
-                //       ),
-                //     ],
-                //   ),
-                // ),
+               
               ],
             ),
           ),
@@ -236,8 +225,6 @@ class _CheckinPageState extends State<CheckinPage> {
     _locationData = await location.getLocation();
 
     setState(() {
-      _latitude = _locationData.latitude.toString();
-      _longitude = _locationData.longitude.toString();
       _longitude2 = _locationData.longitude;
       _latitude2 = _locationData.latitude;
       _checkInTime = DateTime.now().toString();

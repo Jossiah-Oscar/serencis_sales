@@ -3,10 +3,9 @@
   "Number": "",
   "Host Name": "",
   "Reason": "",
-  "Longitude": "",
-  "Latitude": "",
+  "Street Name": "",
   "CheckInTime": "",
   "CheckOutTime": "",
-  "UID":"",
-  "Document ID":""
+  "UID": "",
+  "Document ID": ""
 }

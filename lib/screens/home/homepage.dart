@@ -221,7 +221,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         title: Text(
                                             "${_recentVisits[index].companyName}"),
                                         subtitle: Text(
-                                            "Reason for visit: ${_recentVisits[index].reason} "),
+                                            "Reason for visit: ${_recentVisits[index].reason}\nLocation: ${_recentVisits[index].streetName}"),
 
                                         trailing: ElevatedButton(
                                           style: ElevatedButton.styleFrom(

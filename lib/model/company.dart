@@ -3,8 +3,7 @@ class Visit {
   String? number;
   String? hostName;
   String? reason;
-  String? longitude;
-  String? latitude;
+  String? streetName;
   String? checkInTime;
   String? checkOutTime;
   String? uID;
@@ -15,8 +14,7 @@ class Visit {
       this.number,
       this.hostName,
       this.reason,
-      this.longitude,
-      this.latitude,
+      this.streetName,
       this.checkInTime,
       this.checkOutTime,
       this.uID,
@@ -27,8 +25,7 @@ class Visit {
     number = json['Number'];
     hostName = json['Host Name'];
     reason = json['Reason'];
-    longitude = json['Longitude'];
-    latitude = json['Latitude'];
+    streetName = json['Street Name'];
     checkInTime = json['CheckInTime'];
     checkOutTime = json['CheckOutTime'];
     uID = json['UID'];
@@ -41,8 +38,7 @@ class Visit {
     data['Number'] = this.number;
     data['Host Name'] = this.hostName;
     data['Reason'] = this.reason;
-    data['Longitude'] = this.longitude;
-    data['Latitude'] = this.latitude;
+    data['Street Name'] = this.streetName;
     data['CheckInTime'] = this.checkInTime;
     data['CheckOutTime'] = this.checkOutTime;
     data['UID'] = this.uID;

@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, sized_box_for_whitespace
+// ignore_for_file: prefer_const_constructors, sized_box_for_whitespace, prefer_const_literals_to_create_immutables
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
@@ -13,12 +13,13 @@ class VisitsPage extends StatefulWidget {
 }
 
 class _VisitsPageState extends State<VisitsPage> {
+  bool _customTileExpanded = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(),
-        body: FutureBuilder<List<Visit>>(
-          future: readVisits().first,
+        body: StreamBuilder<List<Visit>>(
+          stream: readVisits(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return Text("Something went wrong");
@@ -32,13 +33,53 @@ class _VisitsPageState extends State<VisitsPage> {
                     itemCount: visits.length,
                     itemBuilder: (context, index) {
                       return Card(
-                        child: ListTile(
-                          title: Text(
-                            visits[index].companyName.toString().toUpperCase(),
+                        child: ExpansionTile(
+                          title: Text(visits[index]
+                              .companyName
+                              .toString()
+                              .toUpperCase()),
+                          subtitle: Text(visits[index]
+                              .streetName
+                              .toString()
+                              .toUpperCase()),
+                          trailing: Icon(
+                            _customTileExpanded
+                                ? Icons.arrow_drop_down_circle
+                                : Icons.arrow_drop_down,
                           ),
-                          subtitle: Text(
-                              "Reason for visit: ${visits[index].reason.toString()}"),
+                          children: <Widget>[
+                            ListTile(
+                              title: Text(
+                                "Host Name: ${visits[index].hostName}",
+                              ),
+                            ),
+                            ListTile(
+                              title: Text(
+                                "Check In Time: ${visits[index].checkInTime}",
+                              ),
+                            ),
+                            ListTile(
+                              title: Text(
+                                "Check Out Time: ${visits[index].checkOutTime}",
+                              ),
+                            ),
+                            ListTile(
+                              title: Text(
+                                "Phone Number: ${visits[index].checkInTime}",
+                              ),
+                            ),
+                          ],
+                          onExpansionChanged: (bool expanded) {
+                            setState(() => _customTileExpanded = expanded);
+                          },
                         ),
+                        // ListTile(
+                        // title: Text(
+                        //   visits[index].companyName.toString().toUpperCase(),
+                        //   ),
+                        //   subtitle: Text(
+                        //       "Visit Location: ${visits[index].streetName}"),
+                        // ),
                       );
                     }),
               );
