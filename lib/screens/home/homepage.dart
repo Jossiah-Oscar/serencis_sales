@@ -1,8 +1,6 @@
 // ignore_for_file: prefer_const_constructors, sized_box_for_whitespace, prefer_const_literals_to_create_immutables
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:serensic_sale/backend/database.dart';
@@ -22,7 +20,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String checkOutTime = DateTime.now().toString();
+  // String checkOutTime = DateTime.now().toString();
   bool isCheckedOut = false;
   @override
   Widget build(BuildContext context) {
@@ -223,20 +221,28 @@ class _MyHomePageState extends State<MyHomePage> {
                                         title: Text(
                                             "${_recentVisits[index].companyName}"),
                                         subtitle: Text(
-                                            "Reason for visit: ${_recentVisits[index].reason}"),
+                                            "Reason for visit: ${_recentVisits[index].reason} "),
 
-                                        trailing: IconButton(
-                                          onPressed: () {
+                                        trailing: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              primary: _recentVisits[index]
+                                                          .checkOutTime ==
+                                                      null
+                                                  ? Colors.red
+                                                  : Colors.green),
+                                          onPressed: () async {
                                             String? docID =
                                                 _recentVisits[index].documentID;
 
                                             if (_recentVisits[index]
                                                     .checkOutTime ==
                                                 null) {
-                                              // Provider.of<Database>(context,
-                                              //         listen: false)
-                                              //     .checkOut(
-                                              //         checkOutTime, docID);
+                                              await Provider.of<Database>(
+                                                      context,
+                                                      listen: false)
+                                                  .checkOut(
+                                                      DateTime.now().toString(),
+                                                      docID);
 
                                               print(_recentVisits[index]
                                                   .checkOutTime);
@@ -247,14 +253,15 @@ class _MyHomePageState extends State<MyHomePage> {
                                               );
                                             }
                                           },
-                                          icon: Icon(
-                                            Icons.check,
-                                          ),
-                                          color: _recentVisits[index]
+                                          child: _recentVisits[index]
                                                       .checkOutTime ==
                                                   null
-                                              ? Colors.redAccent
-                                              : Colors.green,
+                                              ? Text(
+                                                  "Check Out",
+                                                )
+                                              : Text(
+                                                  "Checked Out",
+                                                ),
                                         ),
                                       ),
                                     );

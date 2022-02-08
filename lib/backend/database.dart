@@ -71,7 +71,6 @@ class Database extends ChangeNotifier {
   }
 
   checkOut(@required String checkOutTime, docID) async {
-   
-    await visitCollection.doc(docID).update({'checkOutTime': checkOutTime});
+    await visitCollection.doc(docID).update({'CheckOutTime': checkOutTime});
   }
 }
