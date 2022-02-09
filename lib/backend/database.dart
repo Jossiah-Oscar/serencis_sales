@@ -71,4 +71,25 @@ class Database extends ChangeNotifier {
   checkOut(@required String checkOutTime, docID) async {
     await visitCollection.doc(docID).update({'CheckOutTime': checkOutTime});
   }
+
+  Stream<List<Visit>> readRecentVisits(String? PrefUID) {
+    Stream<List<Visit>> recentVisits = FirebaseFirestore.instance
+        .collection('Visits')
+        .where('UID', isEqualTo: PrefUID)
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => Visit.fromJson(doc.data())).toList());
+
+    return recentVisits;
+  }
+
+   Stream<List<Visit>> readVisits() {
+    Stream<List<Visit>> visits = FirebaseFirestore.instance
+        .collection("Visits")
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => Visit.fromJson(doc.data())).toList());
+
+    return visits;
+  }
 }

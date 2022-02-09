@@ -203,7 +203,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           }
                         }),
                     StreamBuilder<List<Visit>>(
-                        stream: readRecentVisits(),
+                        stream: Provider.of<Database>(context, listen: false)
+                            .readRecentVisits(finalUID),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             final _recentVisits = snapshot.data!;
@@ -286,17 +287,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   String? finalUID;
-
-  Stream<List<Visit>> readRecentVisits() {
-    Stream<List<Visit>> recentVisits = FirebaseFirestore.instance
-        .collection('Visits')
-        .where('UID', isEqualTo: finalUID)
-        .snapshots()
-        .map((snapshot) =>
-            snapshot.docs.map((doc) => Visit.fromJson(doc.data())).toList());
-
-    return recentVisits;
-  }
 
   Stream<List<Visit>> readVisits() {
     Stream<List<Visit>> visits = FirebaseFirestore.instance

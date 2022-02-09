@@ -3,6 +3,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:serensic_sale/backend/database.dart';
 import 'package:serensic_sale/model/company.dart';
 
 class VisitsPage extends StatefulWidget {
@@ -19,7 +21,7 @@ class _VisitsPageState extends State<VisitsPage> {
     return Scaffold(
         appBar: AppBar(),
         body: StreamBuilder<List<Visit>>(
-          stream: readVisits(),
+          stream: Provider.of<Database>(context, listen: false).readVisits(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return Text("Something went wrong");
@@ -73,13 +75,6 @@ class _VisitsPageState extends State<VisitsPage> {
                             setState(() => _customTileExpanded = expanded);
                           },
                         ),
-                        // ListTile(
-                        // title: Text(
-                        //   visits[index].companyName.toString().toUpperCase(),
-                        //   ),
-                        //   subtitle: Text(
-                        //       "Visit Location: ${visits[index].streetName}"),
-                        // ),
                       );
                     }),
               );
@@ -90,15 +85,5 @@ class _VisitsPageState extends State<VisitsPage> {
             }
           },
         ));
-  }
-
-  Stream<List<Visit>> readVisits() {
-    Stream<List<Visit>> visits = FirebaseFirestore.instance
-        .collection("Visits")
-        .snapshots()
-        .map((snapshot) =>
-            snapshot.docs.map((doc) => Visit.fromJson(doc.data())).toList());
-
-    return visits;
   }
 }
