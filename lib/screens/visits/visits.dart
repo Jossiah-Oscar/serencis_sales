@@ -67,7 +67,7 @@ class _VisitsPageState extends State<VisitsPage> {
                             ),
                             ListTile(
                               title: Text(
-                                "Phone Number: ${visits[index].checkInTime}",
+                                "Phone Number: ${visits[index].number}",
                               ),
                             ),
                           ],

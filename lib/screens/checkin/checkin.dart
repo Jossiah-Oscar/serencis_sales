@@ -165,21 +165,20 @@ class _CheckinPageState extends State<CheckinPage> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.05,
                 ),
-                ElevatedButton(
-                  onPressed: () async {
-                    await _getLocation();
-                    List<address.Placemark> placemarks = await address
-                        .placemarkFromCoordinates(_latitude2!, _longitude2!);
+                // ElevatedButton(
+                //   onPressed: () async {
+                //     await _getLocation();
+                //     List<address.Placemark> placemarks = await address
+                //         .placemarkFromCoordinates(_latitude2!, _longitude2!);
 
-                    print(
-                        "${placemarks[0].street} + ${placemarks[1].street} + ${placemarks[2].street} + ${placemarks[3].street} + ${placemarks[4].street}");
-                    setState(() {
-                      _streetName = placemarks[0].street;
-                    });
-                  },
-                  child: Text("${_streetName}"),
-                ),
-               
+                //     print(
+                //         "${placemarks[0].street} + ${placemarks[1].street} + ${placemarks[2].street} + ${placemarks[3].street} + ${placemarks[4].street}");
+                //     setState(() {
+                //       _streetName = placemarks[0].street;
+                //     });
+                //   },
+                //   child: Text("${_checkInTime}"),
+                // ),
               ],
             ),
           ),
@@ -227,7 +226,7 @@ class _CheckinPageState extends State<CheckinPage> {
     setState(() {
       _longitude2 = _locationData.longitude;
       _latitude2 = _locationData.latitude;
-      _checkInTime = DateTime.now().toString();
+      _checkInTime = DateTime.now().minute.toString();
     });
 
     return _locationData;
