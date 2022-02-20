@@ -2,7 +2,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart' as storage;
 import 'package:serensic_sale/model/company.dart';
 import 'package:serensic_sale/model/user.dart';
@@ -69,7 +68,11 @@ class Database extends ChangeNotifier {
   }
 
   checkOut(@required String checkOutTime, docID) async {
-    await visitCollection.doc(docID).update({'CheckOutTime': checkOutTime});
+    await visitCollection.doc(docID).update(
+      {
+        'CheckOutTime': checkOutTime,
+      },
+    );
   }
 
   Stream<List<Visit>> readRecentVisits(String? PrefUID) {
@@ -83,7 +86,7 @@ class Database extends ChangeNotifier {
     return recentVisits;
   }
 
-   Stream<List<Visit>> readVisits() {
+  Stream<List<Visit>> readVisits() {
     Stream<List<Visit>> visits = FirebaseFirestore.instance
         .collection("Visits")
         .snapshots()
@@ -93,7 +96,6 @@ class Database extends ChangeNotifier {
     return visits;
   }
 
-  //Testing 
+  //Testing
 
-  
 }

@@ -245,8 +245,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                                       DateTime.now().toString(),
                                                       docID);
 
-                                              print(_recentVisits[index]
-                                                  .checkOutTime);
+                                              // print(_recentVisits[index]
+                                              //     .checkOutTime);
                                             } else {
                                               Center(
                                                 child: Text(

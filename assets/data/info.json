@@ -7,5 +7,9 @@
   "CheckInTime": "",
   "CheckOutTime": "",
   "UID": "",
-  "Document ID": ""
+  "Document ID": "",
+  "Opening Stock":"",
+  "Closing Stock":"",
+  "Picture":""
+  
 }
