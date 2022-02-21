@@ -10,5 +10,6 @@
   "Document ID": "",
   "Opening Stock": "",
   "Closing Stock": "",
-  "Picture": [""]
+  "Opening Stock Image":"",
+  "Closing Stock Image":""
 }

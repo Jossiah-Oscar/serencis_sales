@@ -89,6 +89,7 @@ class _UserRecentVisitState extends State<UserRecentVisit> {
                         }),
                   );
                 } else if (snapshot.hasError) {
+                  print(snapshot.error);
                   return Text("Opps Something Went Wrong");
                 } else {
                   return Center(

@@ -55,6 +55,9 @@ class _CheckinPageState extends State<CheckinPage> {
                 // mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.02,
+                  ),
                   ListTile(
                     title: Center(
                       child: Text(
@@ -223,6 +226,8 @@ class _CheckinPageState extends State<CheckinPage> {
                           checkInTime: _checkInTime.toString(),
                           reason: _reasonController.text,
                           UID: finalUID,
+                          openingStock: _openingStockController.text,
+                          closingStock: _closingStockController.text,
                         )
                             .then((value) {
                           _hostNameController.clear();

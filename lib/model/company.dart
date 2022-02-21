@@ -12,7 +12,8 @@ class Visit {
   String? documentID;
   String? openingStock;
   String? closingStock;
-  List<String>? picture;
+  String? openingStockImage;
+  String? closingStockImage;
 
   Visit(
       {this.companyName,
@@ -26,7 +27,8 @@ class Visit {
       this.documentID,
       this.openingStock,
       this.closingStock,
-      this.picture});
+      this.openingStockImage,
+      this.closingStockImage});
 
   Visit.fromJson(Map<String, dynamic> json) {
     companyName = json['Company Name'];
@@ -40,11 +42,12 @@ class Visit {
     documentID = json['Document ID'];
     openingStock = json['Opening Stock'];
     closingStock = json['Closing Stock'];
-    picture = json['Picture'].cast<String>();
+    openingStockImage = json['Opening Stock Image'];
+    closingStockImage = json['Closing Stock Image'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
     data['Company Name'] = this.companyName;
     data['Number'] = this.number;
     data['Host Name'] = this.hostName;
@@ -56,7 +59,8 @@ class Visit {
     data['Document ID'] = this.documentID;
     data['Opening Stock'] = this.openingStock;
     data['Closing Stock'] = this.closingStock;
-    data['Picture'] = this.picture;
+    data['Opening Stock Image'] = this.openingStockImage;
+    data['Closing Stock Image'] = this.closingStockImage;
     return data;
   }
 }
