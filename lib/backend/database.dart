@@ -12,24 +12,31 @@ class Database extends ChangeNotifier {
   final CollectionReference visitCollection =
       FirebaseFirestore.instance.collection("Visits");
 
-  Future creatVisit(
-      {companyName,
-      phoneNumber,
-      hostName,
-      streetName,
-      reason,
-      checkInTime,
-      UID}) async {
+  Future creatVisit({
+    companyName,
+    phoneNumber,
+    hostName,
+    streetName,
+    reason,
+    checkInTime,
+    UID,
+    openingStock,
+    closingStock,
+  }) async {
     String docId = FirebaseFirestore.instance.collection("Visits").doc().id;
     Visit visit = Visit(
-        companyName: companyName,
-        number: phoneNumber,
-        hostName: hostName,
-        streetName: streetName,
-        reason: reason,
-        checkInTime: checkInTime,
-        uID: UID,
-        documentID: docId);
+      companyName: companyName,
+      number: phoneNumber,
+      hostName: hostName,
+      streetName: streetName,
+      reason: reason,
+      checkInTime: checkInTime,
+      uID: UID,
+      documentID: docId,
+      openingStock: openingStock,
+      closingStock: closingStock,
+      picture: [],
+    );
 
     var data = visit.toJson();
     await visitCollection.doc(docId).set(data).whenComplete(() {

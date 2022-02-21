@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_collection_literals, unnecessary_this, unnecessary_new
+// ignore_for_file: prefer_collection_literals, unnecessary_this
 
 class Visit {
   String? companyName;
@@ -10,9 +10,9 @@ class Visit {
   String? checkOutTime;
   String? uID;
   String? documentID;
-  int? openingStock;
-  int? closingStock;
-  String? picture;
+  String? openingStock;
+  String? closingStock;
+  List<String>? picture;
 
   Visit(
       {this.companyName,
@@ -40,11 +40,11 @@ class Visit {
     documentID = json['Document ID'];
     openingStock = json['Opening Stock'];
     closingStock = json['Closing Stock'];
-    picture = json['Picture'];
+    picture = json['Picture'].cast<String>();
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['Company Name'] = this.companyName;
     data['Number'] = this.number;
     data['Host Name'] = this.hostName;

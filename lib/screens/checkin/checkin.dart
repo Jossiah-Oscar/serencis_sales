@@ -20,6 +20,8 @@ class CheckinPage extends StatefulWidget {
 class _CheckinPageState extends State<CheckinPage> {
   final _companyNameController = TextEditingController();
   final _phoneNumberController = TextEditingController();
+  final _openingStockController = TextEditingController();
+  final _closingStockController = TextEditingController();
 
   final _hostNameController = TextEditingController();
   final _reasonController = TextEditingController();
@@ -45,141 +47,168 @@ class _CheckinPageState extends State<CheckinPage> {
           child: Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            child: Column(
-              // mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                ListTile(
-                  title: Center(
-                    child: Text(
-                      "Visit Detail",
-                      style: Theme.of(context).textTheme.headline4,
+            child: SingleChildScrollView(
+              child: Column(
+                // mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  ListTile(
+                    title: Center(
+                      child: Text(
+                        "Visit Detail",
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                    ),
+                    subtitle: Center(
+                      child: Text("Please Enter Visit Details"),
                     ),
                   ),
-                  subtitle: Center(
-                    child: Text("Please Enter Visit Details"),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.03,
                   ),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.03,
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.85,
-                  child: TextField(
-                    controller: _companyNameController,
-                    decoration: InputDecoration(
-                      label: Text("Company Name"),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.85,
+                    child: TextField(
+                      controller: _companyNameController,
+                      decoration: InputDecoration(
+                        label: Text("Company Name"),
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.03,
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.85,
-                  child: TextField(
-                    controller: _hostNameController,
-                    decoration: InputDecoration(
-                      label: Text("Host Name"),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.03,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.85,
+                    child: TextField(
+                      controller: _hostNameController,
+                      decoration: InputDecoration(
+                        label: Text("Host Name"),
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.03,
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.85,
-                  child: TextField(
-                    controller: _phoneNumberController,
-                    decoration: InputDecoration(
-                      label: Text("Phone Number"),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.03,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.85,
+                    child: TextField(
+                      controller: _phoneNumberController,
+                      decoration: InputDecoration(
+                        label: Text("Phone Number"),
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.03,
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.85,
-                  child: TextField(
-                    controller: _reasonController,
-                    decoration: InputDecoration(
-                      label: Text("Reason for Visit"),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.03,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.85,
+                    child: TextField(
+                      controller: _openingStockController,
+                      decoration: InputDecoration(
+                        label: Text("Opening Stock"),
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.04,
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  child: ElevatedButton(
-                    child: Text("Check In"),
-                    onPressed: () async {
-                      // getLocation();
-
-                      await _getLocation();
-                      List<address.Placemark> placemarks = await address
-                          .placemarkFromCoordinates(_latitude2!, _longitude2!);
-                      setState(() {
-                        _streetName = placemarks[0].street;
-                      });
-
-                      //getting the shared preference UID saved to add it to the database
-                      SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                      var obtainedUID = prefs.getString("UID");
-
-                      setState(() {
-                        finalUID = obtainedUID;
-                      });
-
-                      // .then((value) {});
-                      Provider.of<Database>(context, listen: false)
-                          .creatVisit(
-                        hostName: _hostNameController.text,
-                        companyName: _companyNameController.text,
-                        phoneNumber: _phoneNumberController.text,
-                        streetName: _streetName,
-                        checkInTime: _checkInTime.toString(),
-                        reason: _reasonController.text,
-                        UID: finalUID,
-                      )
-                          .then((value) {
-                        _hostNameController.clear();
-                        _companyNameController.clear();
-                        _phoneNumberController.clear();
-                        _reasonController.clear();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return MyHomePage();
-                            },
-                          ),
-                        );
-                      });
-                    },
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.03,
                   ),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.05,
-                ),
-                // ElevatedButton(
-                //   onPressed: () async {
-                //     await _getLocation();
-                //     List<address.Placemark> placemarks = await address
-                //         .placemarkFromCoordinates(_latitude2!, _longitude2!);
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.85,
+                    child: TextField(
+                      controller: _closingStockController,
+                      decoration: InputDecoration(
+                        label: Text("Closing Stock"),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.03,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.85,
+                    child: TextField(
+                      controller: _reasonController,
+                      decoration: InputDecoration(
+                        label: Text("Reason for Visit"),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.04,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    child: ElevatedButton(
+                      child: Text("Check In"),
+                      onPressed: () async {
+                        // getLocation();
 
-                //     print(
-                //         "${placemarks[0].street} + ${placemarks[1].street} + ${placemarks[2].street} + ${placemarks[3].street} + ${placemarks[4].street}");
-                //     setState(() {
-                //       _streetName = placemarks[0].street;
-                //     });
-                //   },
-                //   child: Text("${_checkInTime}"),
-                // ),
-              ],
+                        await _getLocation();
+                        List<address.Placemark> placemarks =
+                            await address.placemarkFromCoordinates(
+                                _latitude2!, _longitude2!);
+                        setState(() {
+                          _streetName = placemarks[0].street;
+                        });
+
+                        //getting the shared preference UID saved to add it to the database
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        var obtainedUID = prefs.getString("UID");
+
+                        setState(() {
+                          finalUID = obtainedUID;
+                        });
+
+                        // .then((value) {});
+                        Provider.of<Database>(context, listen: false)
+                            .creatVisit(
+                          hostName: _hostNameController.text,
+                          companyName: _companyNameController.text,
+                          phoneNumber: _phoneNumberController.text,
+                          streetName: _streetName,
+                          checkInTime: _checkInTime.toString(),
+                          reason: _reasonController.text,
+                          UID: finalUID,
+                        )
+                            .then((value) {
+                          _hostNameController.clear();
+                          _companyNameController.clear();
+                          _phoneNumberController.clear();
+                          _reasonController.clear();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return MyHomePage();
+                              },
+                            ),
+                          );
+                        });
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.05,
+                  ),
+                  // ElevatedButton(
+                  //   onPressed: () async {
+                  //     await _getLocation();
+                  //     List<address.Placemark> placemarks = await address
+                  //         .placemarkFromCoordinates(_latitude2!, _longitude2!);
+
+                  //     print(
+                  //         "${placemarks[0].street} + ${placemarks[1].street} + ${placemarks[2].street} + ${placemarks[3].street} + ${placemarks[4].street}");
+                  //     setState(() {
+                  //       _streetName = placemarks[0].street;
+                  //     });
+                  //   },
+                  //   child: Text("${_checkInTime}"),
+                  // ),
+                ],
+              ),
             ),
           ),
         ),

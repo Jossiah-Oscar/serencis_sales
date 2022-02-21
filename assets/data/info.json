@@ -8,8 +8,7 @@
   "CheckOutTime": "",
   "UID": "",
   "Document ID": "",
-  "Opening Stock":"",
-  "Closing Stock":"",
-  "Picture":""
-  
+  "Opening Stock": "",
+  "Closing Stock": "",
+  "Picture": [""]
 }

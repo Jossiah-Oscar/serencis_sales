@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:serensic_sale/backend/database.dart';
 import 'package:serensic_sale/screens/authentication/signin.dart';
 import 'package:serensic_sale/screens/authentication/signup.dart';
+import 'package:serensic_sale/screens/camera/camera.dart';
 import 'package:serensic_sale/screens/checkin/checkin.dart';
 import 'package:serensic_sale/screens/home/homepage.dart';
 import 'package:serensic_sale/screens/visits/visits.dart';
@@ -36,7 +37,8 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: const Wrapper(),
+          // home: const Wrapper(),
+          home: ReceiptPage(),
         ));
   }
 }
@@ -81,8 +83,6 @@ class _WrapperState extends State<Wrapper> {
   Future getValidationData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var obtainedUID = prefs.getString("UID");
-
-  
 
     setState(() {
       finalUID = obtainedUID;
