@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:serensic_sale/backend/database.dart';
 import 'package:serensic_sale/model/company.dart';
 import 'package:serensic_sale/model/user.dart' as f_User;
+import 'package:serensic_sale/screens/checkout/checkout.dart';
 
 class UserRecentVisit extends StatefulWidget {
   String? finalUID;
@@ -59,22 +60,31 @@ class _UserRecentVisitState extends State<UserRecentVisit> {
                                 onPressed: () async {
                                   String? docID =
                                       _recentVisits[index].documentID;
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return CheckOutPage(
+                                            visit: _recentVisits[index]);
+                                      },
+                                    ),
+                                  );
 
-                                  if (_recentVisits[index].checkOutTime ==
-                                      null) {
-                                    await Provider.of<Database>(context,
-                                            listen: false)
-                                        .checkOut(
-                                            DateTime.now().toString(), docID);
+                                  // if (_recentVisits[index].checkOutTime ==
+                                  //     null) {
+                                  //   await Provider.of<Database>(context,
+                                  //           listen: false)
+                                  //       .checkOut(
+                                  //           DateTime.now().toString(), docID);
 
-                                    // print(_recentVisits[index]
-                                    //     .checkOutTime);
-                                  } else {
-                                    Center(
-                                      child: Text(
-                                          "This location has been checked out"),
-                                    );
-                                  }
+                                  //   // print(_recentVisits[index]
+                                  //   //     .checkOutTime);
+                                  // } else {
+                                  //   Center(
+                                  //     child: Text(
+                                  //         "This location has been checked out"),
+                                  //   );
+                                  // }
                                 },
                                 child: _recentVisits[index].checkOutTime == null
                                     ? Text(

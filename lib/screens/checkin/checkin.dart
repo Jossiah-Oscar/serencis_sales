@@ -168,24 +168,7 @@ class _CheckinPageState extends State<CheckinPage> {
                                   ),
                           ),
                         ),
-                        Card(
-                          elevation: 5.0,
-                          child: Container(
-                            height: MediaQuery.of(context).size.height * 0.15,
-                            width: MediaQuery.of(context).size.width * 0.45,
-                            // color: Colors.amberAccent,
-                            child: image1 != null
-                                ? Image.file(image!)
-                                : Center(
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        _imgFromCamera1();
-                                      },
-                                      child: Text("Closing Stock Image"),
-                                    ),
-                                  ),
-                          ),
-                        ),
+                       
                       ],
                     ),
                   ),

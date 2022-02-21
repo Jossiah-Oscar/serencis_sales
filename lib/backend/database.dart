@@ -105,12 +105,36 @@ class Database extends ChangeNotifier {
     });
   }
 
-  checkOut(@required String checkOutTime, docID) async {
-    await visitCollection.doc(docID).update(
-      {
-        'CheckOutTime': checkOutTime,
-      },
-    );
+  checkOut(@required String checkOutTime, docID, File result) async {
+    if (result != null) {
+      String filename = basename(result.path);
+
+      firebase_storage.Reference storageRef = firebase_storage
+          .FirebaseStorage.instance
+          .ref()
+          .child('Serensic/$filename');
+      final firebase_storage.UploadTask uploadTask = storageRef.putFile(result);
+      final firebase_storage.TaskSnapshot downloadUrl = await uploadTask;
+      final String mediaLink = (await downloadUrl.ref.getDownloadURL());
+
+      //getting media link and writing it to the database
+      if (mediaLink != null) {
+        try {
+          await visitCollection.doc(docID).update(
+            {
+              'CheckOutTime': checkOutTime,
+              'Closing Stock Image': mediaLink,
+            },
+          );
+        } catch (e) {
+          if (kDebugMode) {
+            print(e);
+          }
+        }
+      }
+    } else {
+      return;
+    }
   }
 
   Stream<List<Visit>> readRecentVisits(String? PrefUID) {
