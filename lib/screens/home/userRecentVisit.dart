@@ -58,33 +58,35 @@ class _UserRecentVisitState extends State<UserRecentVisit> {
                                             ? Colors.red
                                             : Colors.green),
                                 onPressed: () async {
-                                  String? docID =
-                                      _recentVisits[index].documentID;
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) {
-                                        return CheckOutPage(
-                                            visit: _recentVisits[index]);
-                                      },
-                                    ),
-                                  );
-
-                                  // if (_recentVisits[index].checkOutTime ==
-                                  //     null) {
-                                  //   await Provider.of<Database>(context,
-                                  //           listen: false)
-                                  //       .checkOut(
-                                  //           DateTime.now().toString(), docID);
-
-                                  //   // print(_recentVisits[index]
-                                  //   //     .checkOutTime);
-                                  // } else {
-                                  //   Center(
-                                  //     child: Text(
-                                  //         "This location has been checked out"),
-                                  //   );
-                                  // }
+                                  if (_recentVisits[index].checkOutTime ==
+                                      null) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) {
+                                          return CheckOutPage(
+                                              visit: _recentVisits[index]);
+                                        },
+                                      ),
+                                    );
+                                  } else {
+                                    showDialog<String>(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          AlertDialog(
+                                        title: const Text('Visit Checked Out'),
+                                        content: const Text(
+                                            'This visit has already been Checked Out'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context, 'OK'),
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }
                                 },
                                 child: _recentVisits[index].checkOutTime == null
                                     ? Text(
