@@ -156,8 +156,8 @@ class _CheckinPageState extends State<CheckinPage> {
                             height: MediaQuery.of(context).size.height * 0.15,
                             width: MediaQuery.of(context).size.width * 0.45,
                             // color: Colors.amberAccent,
-                            child: imageArray.isNotEmpty
-                                ? Image.file(imageArray[0])
+                            child: image != null
+                                ? Image.file(image!)
                                 : Center(
                                     child: ElevatedButton(
                                       onPressed: () {
@@ -174,12 +174,12 @@ class _CheckinPageState extends State<CheckinPage> {
                             height: MediaQuery.of(context).size.height * 0.15,
                             width: MediaQuery.of(context).size.width * 0.45,
                             // color: Colors.amberAccent,
-                            child: imageArray.length == 2
-                                ? Image.file(imageArray[1])
+                            child: image1 != null
+                                ? Image.file(image!)
                                 : Center(
                                     child: ElevatedButton(
                                       onPressed: () {
-                                        _imgFromCamera();
+                                        _imgFromCamera1();
                                       },
                                       child: Text("Closing Stock Image"),
                                     ),
@@ -228,6 +228,7 @@ class _CheckinPageState extends State<CheckinPage> {
                           UID: finalUID,
                           openingStock: _openingStockController.text,
                           closingStock: _closingStockController.text,
+                          result: image,
                         )
                             .then((value) {
                           _hostNameController.clear();
@@ -317,21 +318,31 @@ class _CheckinPageState extends State<CheckinPage> {
     return _locationData;
   }
 
-  List imageArray = [];
+  File? image;
+  File? image1;
 
   _imgFromCamera() async {
     final images = await ImagePicker().pickImage(
       source: ImageSource.camera,
     );
-    imageArray.add(
-      File(images!.path),
-    );
-    // final tempImage = File(image!.path);
+
+    final File? tempImage = File(images!.path);
 
     setState(() {
-      imageArray;
       print(images.name);
-      // this.image = tempImage;
+      this.image = tempImage;
+    });
+  }
+
+  _imgFromCamera1() async {
+    final images = await ImagePicker().pickImage(
+      source: ImageSource.camera,
+    );
+
+    final File? tempImage = File(images!.path);
+
+    setState(() {
+      this.image1 = tempImage;
     });
   }
 }

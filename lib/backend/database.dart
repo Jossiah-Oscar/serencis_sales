@@ -1,10 +1,16 @@
 // ignore_for_file: invalid_required_positional_param, non_constant_identifier_names
 
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_storage/firebase_storage.dart' as storage;
 import 'package:serensic_sale/model/company.dart';
 import 'package:serensic_sale/model/user.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
+import 'package:path/path.dart';
 
 class Database extends ChangeNotifier {
   final CollectionReference userCollection =
@@ -12,41 +18,67 @@ class Database extends ChangeNotifier {
   final CollectionReference visitCollection =
       FirebaseFirestore.instance.collection("Visits");
 
-  Future creatVisit(
-      {String? companyName,
-      phoneNumber,
-      hostName,
-      streetName,
-      reason,
-      checkInTime,
-      UID,
-      openingStock,
-      closingStock,
-      }) async {
-    String docId = FirebaseFirestore.instance.collection("Visits").doc().id;
-    Visit visit = Visit(
-      companyName: companyName,
-      number: phoneNumber,
-      hostName: hostName,
-      streetName: streetName,
-      reason: reason,
-      checkInTime: checkInTime,
-      uID: UID,
-      documentID: docId,
-      openingStock: openingStock,
-      closingStock: closingStock,
-    );
+  Future creatVisit({
+    String? companyName,
+    phoneNumber,
+    hostName,
+    streetName,
+    reason,
+    checkInTime,
+    UID,
+    openingStock,
+    closingStock,
+    File? result,
+  }) async {
+    if (result != null) {
+      String filename = basename(result.path);
 
-    var data = visit.toJson();
-    await visitCollection.doc(docId).set(data).whenComplete(() {
-      if (kDebugMode) {
-        print("Visit Data Added with $docId");
+      firebase_storage.Reference storageRef = firebase_storage
+          .FirebaseStorage.instance
+          .ref()
+          .child('Serensic/$filename');
+      final firebase_storage.UploadTask uploadTask = storageRef.putFile(result);
+      final firebase_storage.TaskSnapshot downloadUrl = await uploadTask;
+      final String mediaLink = (await downloadUrl.ref.getDownloadURL());
+
+      //getting media link and writing it to the database
+      if (mediaLink != null) {
+        try {
+          String docId =
+              FirebaseFirestore.instance.collection("Visits").doc().id;
+          Visit visit = Visit(
+            companyName: companyName,
+            number: phoneNumber,
+            hostName: hostName,
+            streetName: streetName,
+            reason: reason,
+            checkInTime: checkInTime,
+            uID: UID,
+            documentID: docId,
+            openingStock: openingStock,
+            closingStock: closingStock,
+            openingStockImage: mediaLink,
+          );
+
+          var data = visit.toJson();
+          await visitCollection.doc(docId).set(data).whenComplete(() {
+            if (kDebugMode) {
+              print("Visit Data Added with $docId");
+            }
+          }).catchError((e) {
+            if (kDebugMode) {
+              print(e);
+            }
+          });
+        } catch (e) {
+          if (kDebugMode) {
+            print(e);
+          }
+        }
       }
-    }).catchError((e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    });
+    } else {
+      return;
+    }
   }
 
   storeUserData({required String userName, userRole, userEmail, uID}) async {
