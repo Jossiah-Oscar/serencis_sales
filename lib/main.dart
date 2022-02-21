@@ -37,8 +37,8 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          // home: const Wrapper(),
-          home: ReceiptPage(),
+          home: const Wrapper(),
+          // home: ReceiptPage(),
         ));
   }
 }

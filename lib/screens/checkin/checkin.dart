@@ -1,7 +1,10 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:serensic_sale/backend/database.dart';
@@ -139,6 +142,54 @@ class _CheckinPageState extends State<CheckinPage> {
                     height: MediaQuery.of(context).size.height * 0.04,
                   ),
                   Container(
+                    height: MediaQuery.of(context).size.height * 0.15,
+                    width: MediaQuery.of(context).size.width,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Card(
+                          elevation: 5.0,
+                          child: Container(
+                            height: MediaQuery.of(context).size.height * 0.15,
+                            width: MediaQuery.of(context).size.width * 0.45,
+                            // color: Colors.amberAccent,
+                            child: imageArray.isNotEmpty
+                                ? Image.file(imageArray[0])
+                                : Center(
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        _imgFromCamera();
+                                      },
+                                      child: Text("Opening Stock Image"),
+                                    ),
+                                  ),
+                          ),
+                        ),
+                        Card(
+                          elevation: 5.0,
+                          child: Container(
+                            height: MediaQuery.of(context).size.height * 0.15,
+                            width: MediaQuery.of(context).size.width * 0.45,
+                            // color: Colors.amberAccent,
+                            child: imageArray.length == 2
+                                ? Image.file(imageArray[1])
+                                : Center(
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        _imgFromCamera();
+                                      },
+                                      child: Text("Closing Stock Image"),
+                                    ),
+                                  ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.04,
+                  ),
+                  Container(
                     width: MediaQuery.of(context).size.width * 0.5,
                     child: ElevatedButton(
                       child: Text("Check In"),
@@ -259,5 +310,23 @@ class _CheckinPageState extends State<CheckinPage> {
     });
 
     return _locationData;
+  }
+
+  List imageArray = [];
+
+  _imgFromCamera() async {
+    final images = await ImagePicker().pickImage(
+      source: ImageSource.camera,
+    );
+    imageArray.add(
+      File(images!.path),
+    );
+    // final tempImage = File(image!.path);
+
+    setState(() {
+      imageArray;
+      print(images.name);
+      // this.image = tempImage;
+    });
   }
 }
