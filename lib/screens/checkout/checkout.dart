@@ -146,8 +146,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
                         },
                       ),
                     );
-                    // print(_recentVisits[index]
-                    //     .checkOutTime);
+                 
                   } else {
                     Center(
                       child: Text("This location has been checked out"),
@@ -176,3 +175,4 @@ class _CheckOutPageState extends State<CheckOutPage> {
     });
   }
 }
+

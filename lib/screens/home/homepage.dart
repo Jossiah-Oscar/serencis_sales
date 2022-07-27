@@ -22,7 +22,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // String checkOutTime = DateTime.now().toString();
   bool isCheckedOut = false;
   @override
   Widget build(BuildContext context) {
@@ -121,7 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
       finalUID = obtainedUID;
     });
 
-    //Using the acquired UID to retrive the correct user document
+    //Using the acquired UID to retrive the cofidrrect user document
     final docUser =
         FirebaseFirestore.instance.collection("Users").doc(finalUID);
     final snapshot = await docUser.get();

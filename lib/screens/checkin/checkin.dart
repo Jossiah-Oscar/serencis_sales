@@ -295,7 +295,7 @@ class _CheckinPageState extends State<CheckinPage> {
     setState(() {
       _longitude2 = _locationData.longitude;
       _latitude2 = _locationData.latitude;
-      _checkInTime = DateTime.now().minute.toString();
+      _checkInTime = DateTime.now().toString();
     });
 
     return _locationData;
@@ -313,7 +313,7 @@ class _CheckinPageState extends State<CheckinPage> {
 
     setState(() {
       print(images.name);
-      this.image = tempImage;
+      image = tempImage;
     });
   }
 
